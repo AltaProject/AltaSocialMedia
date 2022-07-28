@@ -15,16 +15,22 @@ type UserHandler interface {
 	Register() echo.HandlerFunc
 	GetSpecificUser() echo.HandlerFunc
 	Login() echo.HandlerFunc
+	UpdateUser() echo.HandlerFunc
+	DeleteUser() echo.HandlerFunc
 }
 
 type UserUseCases interface {
 	Register(newUser User) (User, error)
 	GetSpecificUser(userId int) (User, error)
 	Login(email string, password string) (username string, token string, err error)
+	UpdateUser(updateUser User, userId int) (User, error)
+	DeleteUser(userId int) (bool, error)
 }
 
 type UserData interface {
 	Register(newUser User) (User, error)
 	GetSpecificUser(userId int) (User, error)
 	Login(email string, password string) (username string, token string, err error)
+	UpdateUser(updateUser User, userId int) (User, error)
+	DeleteUser(userId int) bool
 }

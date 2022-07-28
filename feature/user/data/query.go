@@ -52,3 +52,34 @@ func (ud *userData) Login(email string, password string) (username string, token
 
 	return userData.Username, token, nil
 }
+
+func (ud *userData) UpdateUser(updateUser domain.User, userId int) (domain.User, error) {
+	var updates = FromModel(updateUser)
+	err := ud.db.Model(&User{}).Where("ID = ?", userId).Updates(updates)
+	if err.Error != nil {
+		log.Println("cant update content", err.Error.Error())
+		return domain.User{}, nil
+	}
+
+	if err.RowsAffected == 0 {
+		log.Println("Content Not Updated")
+		return domain.User{}, nil
+
+	}
+	return updates.ToModel(), nil
+
+}
+
+func (ud *userData) DeleteUser(userId int) bool {
+	err := ud.db.Where("ID = ?", userId).Delete(&User{})
+	if err.Error != nil {
+		log.Println("cannot delete content", err.Error.Error())
+		return false
+	}
+	if err.RowsAffected < 1 {
+		log.Println("No content deleted", err.Error.Error())
+		return false
+	}
+
+	return true
+}

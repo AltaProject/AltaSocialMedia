@@ -3,6 +3,8 @@ package delivery
 import (
 	"log"
 	"net/http"
+	"strconv"
+	"strings"
 
 	"github.com/AltaProject/AltaSocialMedia/domain"
 	"github.com/AltaProject/AltaSocialMedia/feature/common"
@@ -80,7 +82,58 @@ func (us *userHandler) Login() echo.HandlerFunc {
 			"message": "login berhasil",
 			"data":    data,
 		})
+	}
+}
+
+func (us *userHandler) UpdateUser() echo.HandlerFunc {
+	return func(c echo.Context) error {
+		var tmp RegisterFormat
+		err := c.Bind(&tmp)
+		idCon := c.Param("id")
+		id, _ := strconv.Atoi(idCon)
+
+		if err != nil {
+			log.Println("Cannot Parse Data", err)
+			c.JSON(http.StatusBadRequest, "error read update")
+		}
+		data, err := us.userUsecase.UpdateUser(tmp.ToModel(), id)
+
+		if err != nil {
+			log.Println("Cannot Update Content", err)
+			c.JSON(http.StatusInternalServerError, err)
+		}
+
+		return c.JSON(http.StatusOK, map[string]interface{}{
+			"data":    data,
+			"message": "Update user Success",
+		})
 
 	}
+}
 
+func (us *userHandler) DeleteUser() echo.HandlerFunc {
+	return func(c echo.Context) error {
+		cnv, err := strconv.Atoi(c.Param("id"))
+		if err != nil {
+			log.Println("cannot convert to int", err.Error())
+			return c.JSON(http.StatusInternalServerError, "cannot convert id")
+		}
+
+		data, err := us.userUsecase.DeleteUser(cnv)
+
+		if err != nil {
+			if strings.Contains(err.Error(), "not found") {
+				return c.JSON(http.StatusNotFound, err.Error())
+			} else {
+				return c.JSON(http.StatusInternalServerError, err.Error())
+			}
+		}
+
+		if !data {
+			return c.JSON(http.StatusInternalServerError, "cannot delete")
+		}
+		return c.JSON(http.StatusOK, map[string]interface{}{
+			"message": "success delete user",
+		})
+	}
 }
