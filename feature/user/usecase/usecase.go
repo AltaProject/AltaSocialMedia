@@ -70,3 +70,30 @@ func (ud *userCase) Login(email string, password string) (username string, token
 	username, token, err = ud.userData.Login(email, password)
 	return username, token, err
 }
+
+func (ud *userCase) UpdateUser(updateUser domain.User, userId int) (domain.User, error) {
+	res, _ := ud.GetSpecificUser(userId)
+
+	update, err := ud.userData.UpdateUser(updateUser, userId)
+	update.ID = res.ID
+	update.Nama = res.Nama
+	update.Username = res.Username
+	update.Email = res.Email
+	update.Password = res.Password
+	update.No_HP = res.No_HP
+	if err != nil {
+		log.Println(err.Error())
+		return domain.User{}, err
+	}
+
+	return update, nil
+}
+
+func (ud *userCase) DeleteUser(userId int) (bool, error) {
+	res := ud.userData.DeleteUser(userId)
+
+	if !res {
+		return false, errors.New("failed to delete content")
+	}
+	return true, nil
+}
