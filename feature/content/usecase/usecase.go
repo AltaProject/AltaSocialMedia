@@ -51,7 +51,6 @@ func (cd *contentUseCase) GetContentId(contentId int) (domain.Content, error) {
 
 func (cd *contentUseCase) Update(contentId int, newContent domain.Content) (domain.Content, error) {
 	res, _ := cd.dataContent.GetContentId(contentId)
-
 	update, err := cd.dataContent.Update(contentId, newContent)
 	update.UserID = res.UserID
 	update.ID = res.ID

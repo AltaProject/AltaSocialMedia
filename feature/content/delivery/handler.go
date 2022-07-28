@@ -40,7 +40,7 @@ func (cs *contentHandler) PostContent() echo.HandlerFunc {
 		}
 
 		return c.JSON(http.StatusCreated, map[string]interface{}{
-			"message": "berhasil register data",
+			"message": "berhasil input content",
 			"data":    data,
 		})
 	}
