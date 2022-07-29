@@ -44,3 +44,17 @@ func (cdd *CommentData) PostComment(newComment domain.Comment) (comment domain.C
 	}
 	return cnv.ToModel(), nil
 }
+
+func (cdd *CommentData) DeleteComment(commentID int) bool {
+	err := cdd.db.Where("ID = ?", commentID).Delete(&Comment{})
+	if err.Error != nil {
+		log.Println("cannot delete content", err.Error.Error())
+		return false
+	}
+	if err.RowsAffected < 1 {
+		log.Println("No content deleted", err.Error.Error())
+		return false
+	}
+
+	return true
+}

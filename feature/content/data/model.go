@@ -1,14 +1,17 @@
 package data
 
 import (
+	"time"
+
 	"github.com/AltaProject/AltaSocialMedia/domain"
 	// "github.com/AltaProject/AltaSocialMedia/feature/comment/data"
 )
 
 type Content struct {
-	ID      int    `json:"id" form:"id" gorm:"primaryKey:autoIncrement"`
-	Content string `json:"content" form:"content"`
-	UserID  int
+	ID       int    `json:"id" form:"id" gorm:"primaryKey:autoIncrement"`
+	Content  string `json:"content" form:"content"`
+	UserID   int
+	CreateAt time.Time
 }
 
 func (content *Content) toDomainContent() domain.Content {
