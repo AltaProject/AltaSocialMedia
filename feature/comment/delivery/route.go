@@ -16,6 +16,7 @@ func RouteComment(e *echo.Echo, ch domain.CommentHandler) {
 	}))
 	e.Pre(middleware.RemoveTrailingSlash())
 
-	e.POST("/comment", ch.PostComment(), middleware.JWTWithConfig(middlewares.UseJWT([]byte(config.SECRET))))
-	e.GET("/comment/:id", ch.GetAllComment(), middleware.JWTWithConfig(middlewares.UseJWT([]byte(config.SECRET))))
+	e.POST("/content/:id/comment", ch.PostComment(), middleware.JWTWithConfig(middlewares.UseJWT([]byte(config.SECRET))))
+	e.GET("/content/:id/comment", ch.GetAllComment(), middleware.JWTWithConfig(middlewares.UseJWT([]byte(config.SECRET))))
+	e.DELETE("/comment/:id", ch.DeleteComment(), middleware.JWTWithConfig(middlewares.UseJWT([]byte(config.SECRET))))
 }

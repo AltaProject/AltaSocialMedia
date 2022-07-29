@@ -3,6 +3,7 @@ package delivery
 import (
 	"log"
 	"net/http"
+	"strconv"
 	"strings"
 
 	"github.com/AltaProject/AltaSocialMedia/domain"
@@ -61,6 +62,33 @@ func (cs *commentHandler) PostComment() echo.HandlerFunc {
 		return c.JSON(http.StatusCreated, map[string]interface{}{
 			"message": "berhasil register data",
 			"data":    data,
+		})
+	}
+}
+
+func (cs *commentHandler) DeleteComment() echo.HandlerFunc {
+	return func(c echo.Context) error {
+		cnv, err := strconv.Atoi(c.Param("id"))
+		if err != nil {
+			log.Println("cannot convert to int", err.Error())
+			return c.JSON(http.StatusInternalServerError, "cannot convert id")
+		}
+
+		data, err := cs.commentCases.DeleteComment(cnv)
+
+		if err != nil {
+			if strings.Contains(err.Error(), "not found") {
+				return c.JSON(http.StatusNotFound, err.Error())
+			} else {
+				return c.JSON(http.StatusInternalServerError, err.Error())
+			}
+		}
+
+		if !data {
+			return c.JSON(http.StatusInternalServerError, "cannot delete")
+		}
+		return c.JSON(http.StatusOK, map[string]interface{}{
+			"message": "success delete user",
 		})
 	}
 }

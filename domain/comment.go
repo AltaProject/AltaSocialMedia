@@ -17,17 +17,17 @@ func (Comment) Error() string {
 type CommentHandler interface {
 	GetAllComment() echo.HandlerFunc
 	PostComment() echo.HandlerFunc
-	// DeleteComment() echo.HandlerFunc
+	DeleteComment() echo.HandlerFunc
 }
 
 type CommentUseCases interface {
 	PostingComment(userID int, newComment Comment) (Comment, error)
 	GetAllComment() ([]Comment, error)
-	// DeleteComment(commentID int) (Comment, error)
+	DeleteComment(commentID int) (bool, error)
 }
 
 type DataComment interface {
 	PostComment(newComment Comment) (Comment, error)
 	GetAllComment() ([]Comment, error)
-	// DeleteComment(commentID int) (Comment, error)
+	DeleteComment(commentID int) bool
 }
