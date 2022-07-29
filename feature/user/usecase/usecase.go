@@ -93,7 +93,7 @@ func (ud *userCase) DeleteUser(userId int) (bool, error) {
 	res := ud.userData.DeleteUser(userId)
 
 	if !res {
-		return false, errors.New("failed to delete content")
+		return false, errors.New("failed to delete user")
 	}
 	return true, nil
 }

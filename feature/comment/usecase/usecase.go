@@ -48,3 +48,12 @@ func (cd *commentUseCase) PostingComment(userID int, newComment domain.Comment) 
 	}
 	return posting, nil
 }
+
+func (cd *commentUseCase) DeleteComment(commentID int) (bool, error) {
+	res := cd.dataComment.DeleteComment(commentID)
+
+	if !res {
+		return false, errors.New("failed to delete content")
+	}
+	return true, nil
+}

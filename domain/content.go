@@ -1,11 +1,16 @@
 package domain
 
-import "github.com/labstack/echo/v4"
+import (
+	"time"
+
+	"github.com/labstack/echo/v4"
+)
 
 type Content struct {
-	ID      int
-	Content string
-	UserID  int
+	ID       int
+	Content  string
+	UserID   int
+	CreateAt time.Time
 	// Description string
 }
 
