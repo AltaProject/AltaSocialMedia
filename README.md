@@ -39,7 +39,7 @@ cp sample-env .env
 go run main.go
 ```
 # Endpoints
-Read the API documentation here [API Endpoint Documentation](https://app.swaggerhub.com/apis/rizkicahyo/AltaSosmed/1.0.0#/) (Swagger)
+Read the API documentation here [API Endpoint Documentation](https://app.swaggerhub.com/apis/rizkicahyo/AltaSosmed/1.0.0#/)  (Swagger)
 
 # Credits
 - [Ivan](https://github.com/ivands26) (Author)
